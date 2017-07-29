@@ -19,7 +19,8 @@ metadata:
   namespace: jenkins
 spec:
   tls:
-  - secretName: tls
-  backend:
+  - secretName: tls 
+spec:
+ backend:
     serviceName: jenkins-ui
     servicePort: 8080

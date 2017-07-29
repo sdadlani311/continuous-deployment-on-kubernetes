@@ -26,7 +26,6 @@ import (
 	"net/http"
 	"net/http/httputil"
 
-	"cloud.google.com/go/compute/metadata"
 )
 
 type Instance struct {
@@ -152,11 +151,26 @@ func (a *assigner) assign(getVal func() (string, error)) string {
 }
 
 func newInstance() *Instance {
-	var i = new(Instance)
-	if !metadata.OnGCE() {
-		i.Error = "Not running on GCE"
-		return i
-	}
+        client := &http.Client{}
+
+        req, _ := http.NewRequest("GET", "http://169.254.169.254/metadata/instance", nil)
+        req.Header.Add("Metadata", "True")
+
+        q := req.URL.Query()
+        q.Add("format", "json")
+        q.Add("api-version", "2017-04-02")
+        req.URL.RawQuery = q.Encode()
+
+        resp, err := client.Do(req)
+        if err != nil {
+            fmt.Println("Errored when sending request to the server")
+        return
+        }
+
+        defer resp.Body.Close()
+        resp_body, _ := ioutil.ReadAll(resp.Body) 
+
+        
 
 	a := &assigner{}
 	i.Id = a.assign(metadata.InstanceID)
