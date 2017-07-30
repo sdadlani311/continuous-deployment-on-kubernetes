@@ -151,7 +151,8 @@ func (a *assigner) assign(getVal func() (string, error)) string {
 }
 
 func newInstance() *Instance {
-        client := &http.Client{}
+        var i = new(Instance)
+        ient := &http.Client{}
 
         req, _ := http.NewRequest("GET", "http://169.254.169.254/metadata/instance", nil)
         req.Header.Add("Metadata", "True")
@@ -164,23 +165,24 @@ func newInstance() *Instance {
         resp, err := client.Do(req)
         if err != nil {
             fmt.Println("Errored when sending request to the server")
-        return
+            return
         }
 
         defer resp.Body.Close()
-        resp_body, _ := ioutil.ReadAll(resp.Body) 
+        resp_body, _ := ioutil.ReadAll(resp.Body)
 
-        
+        fmt.Println(resp.Status)
+        fmt.Println(string(resp_body))   
 
 	a := &assigner{}
-	i.Id = a.assign(metadata.InstanceID)
-	i.Zone = a.assign(metadata.Zone)
-	i.Name = a.assign(metadata.InstanceName)
-	i.Hostname = a.assign(metadata.Hostname)
-	i.Project = a.assign(metadata.ProjectID)
-	i.InternalIP = a.assign(metadata.InternalIP)
-	i.ExternalIP = a.assign(metadata.ExternalIP)
-	i.Version = version
+//	i.Id = a.assign(metadata.InstanceID)
+//	i.Zone = a.assign(metadata.Zone)
+//	i.Name = a.assign(metadata.InstanceName)
+//	i.Hostname = a.assign(metadata.Hostname)
+//	i.Project = a.assign(metadata.ProjectID)
+//	i.InternalIP = a.assign(metadata.InternalIP)
+//	i.ExternalIP = a.assign(metadata.ExternalIP)
+//	i.Version = version
 
 	if a.err != nil {
 		i.Error = a.err.Error()
