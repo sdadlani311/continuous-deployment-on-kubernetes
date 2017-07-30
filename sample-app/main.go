@@ -152,7 +152,7 @@ func (a *assigner) assign(getVal func() (string, error)) string {
 
 func newInstance() *Instance {
         var i = new(Instance)
-        ient := &http.Client{}
+        client := &http.Client{}
 
         req, _ := http.NewRequest("GET", "http://169.254.169.254/metadata/instance", nil)
         req.Header.Add("Metadata", "True")
@@ -165,8 +165,9 @@ func newInstance() *Instance {
         resp, err := client.Do(req)
         if err != nil {
             fmt.Println("Errored when sending request to the server")
-            return
         }
+
+
 
         defer resp.Body.Close()
         resp_body, _ := ioutil.ReadAll(resp.Body)
