@@ -4,7 +4,6 @@ node {
   def feSvcName = "${appName}-frontend"
   def imageTag = "sdadlani311/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
 
-  checkout scm
 
   dir('sample-app') {
     stage ('Build image') {
