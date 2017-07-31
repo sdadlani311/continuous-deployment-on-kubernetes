@@ -8,8 +8,7 @@ node {
 
   dir('sample-app') {
     stage ('Build image') {
-      sh("sleep 10m")
-      sh("docker build -t ${imageTag} .")
+      sh("sudo docker build -t ${imageTag} .")
     }
     stage ('Run Go tests') {
       sh("docker run ${imageTag} go test")
